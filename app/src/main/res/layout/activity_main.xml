@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Aplicación para actualizar app, SOLO administradores -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/strLeonappdita"
+            android:gravity="center"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/strBanners"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/plussign"
+            android:layout_gravity="center"
+            android:id="@+id/imgvBanner1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/strElegirImagen"
+            android:textAllCaps="false"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btnElegirImagen1"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/strLink1"
+            android:gravity="center"
+            android:textSize="13sp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/edtBanner1Link"
+            android:inputType="text"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnBanner1"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:text="@string/strSubirBanner1"
+                android:textAllCaps="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnBanner2" />
+
+            <Button
+                android:id="@+id/btnBanner2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:text="@string/strSubirBanner2"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnBanner1"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Aquí acaban banners y empiezan libros -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/strLibros"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/plussign"
+            android:layout_gravity="center"
+            android:id="@+id/imgvLibro"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/strElegirImagen"
+            android:textAllCaps="false"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btnElegirImagenLibro"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/strLink1"
+            android:gravity="center"
+            android:textSize="13sp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/edtLibroLink"
+            android:inputType="text"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/strIdDocumento"
+            android:gravity="center"
+            android:textSize="13sp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/edtLibroId"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/btnLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="@string/subir_libro"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnBanner2"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Productos"
+            android:gravity="center"
+            android:textSize="20sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="Titulo"
+                android:id="@+id/edtProductoTitulo"
+                />
+            <Button
+                android:id="@+id/btnElegirImagenProducto"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/strElegirImagen"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="100dp"
+            android:id="@+id/btnProducto"
+            android:layout_height="wrap_content"
+            android:text="Subir Producto"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

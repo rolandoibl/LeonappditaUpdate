@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">LeonappditaUpdate</string>
+    <string name="strLeonappdita">Leonappdita Update</string>
+    <string name="strBanners">Banners</string>
+    <string name="strImagen1">Imagen</string>
+    <string name="strLink1">Link</string>
+    <string name="strSubirBanner1">Subir banner 1</string>
+    <string name="strElegirImagen">Elegir imagen</string>
+    <string name="strSubirBanner2">Subir banner 2</string>
+    <string name="strLibros">Libros</string>
+    <string name="subir_libro">Subir libro</string>
+    <string name="strIdDocumento">Id del documento</string>
+</resources>

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.leonappditaupdate.Comida.Producto;
@@ -47,9 +48,12 @@ public class MainActivity extends AppCompatActivity {
     Button btnElegirImagen1;
     Button btnElegirImagenLibro;
     Button btnElegirImagenProducto;
+    Switch swtDesayuno;
+    Switch swtComida;
+    Switch swtDulces;
+    Switch swtPostres;
 
-    ImageView imgvBanner1;
-    ImageView imgvLibro;
+    ImageView imgvImagenItem;
 
     FirebaseFirestore db;
 
@@ -67,26 +71,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        imgvImagenItem = findViewById(R.id.imgvBanner1);
+
+        //Id producto
         edtProductoTitulo =findViewById(R.id.edtProductoTitulo);
         btnElegirImagenProducto=findViewById(R.id.btnElegirImagenProducto);
         btnProducto = findViewById(R.id.btnProducto);
+        swtDesayuno = findViewById(R.id.swtDesayuno);
+        swtComida = findViewById(R.id.swtComida);
+        swtDulces = findViewById(R.id.swtDulces);
+        swtPostres = findViewById(R.id.swtPostres);
+
+        //Id banner
         edtBanner1Link = findViewById(R.id.edtBanner1Link);
-        edtLibroLink = findViewById(R.id.edtLibroLink);
-        edtLibroId = findViewById(R.id.edtLibroId);
         btnBanner1 = findViewById(R.id.btnBanner1);
         btnBanner2 = findViewById(R.id.btnBanner2);
-        btnLibro = findViewById(R.id.btnLibro);
         btnElegirImagen1 = findViewById(R.id.btnElegirImagen1);
-        btnElegirImagenLibro = findViewById(R.id.btnElegirImagenLibro);
-        imgvBanner1 = findViewById(R.id.imgvBanner1);
-        imgvLibro = findViewById(R.id.imgvLibro);
         btnBanner1.setOnClickListener(onClickBanner1);
         btnBanner2.setOnClickListener(onClickBanner2);
+
+        //Id libro
+        edtLibroLink = findViewById(R.id.edtLibroLink);
+        edtLibroId = findViewById(R.id.edtLibroId);
+        btnLibro = findViewById(R.id.btnLibro);
+        btnElegirImagenLibro = findViewById(R.id.btnElegirImagenLibro);
+
+        //Listener
         btnLibro.setOnClickListener(onClickLibro);
         btnElegirImagen1.setOnClickListener(onClickElegirBanner1);
         btnElegirImagenLibro.setOnClickListener(onClickElegirLibro);
         btnElegirImagenProducto.setOnClickListener(onClickElegirProducto);
         btnProducto.setOnClickListener(onClickProducto);
+
+        //Instancia de Firebase
         db = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
     }
@@ -159,9 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(),filepath);
                 try{
                     bitmap = ImageDecoder.decodeBitmap(source);
-                    if(llamada==1) imgvBanner1.setImageBitmap(bitmap);
-                    else if(llamada==2) imgvLibro.setImageBitmap(bitmap);
-                    if (llamada==3) imgvLibro.setImageBitmap(bitmap);
+                    imgvImagenItem.setImageBitmap(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -169,9 +185,8 @@ public class MainActivity extends AppCompatActivity {
             else{
                 try{
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),filepath);
-                    if(llamada==1) imgvBanner1.setImageBitmap(bitmap);
-                    else if(llamada==2) imgvLibro.setImageBitmap(bitmap);
-                    if(llamada==3) imgvLibro.setImageBitmap(bitmap);
+                    imgvImagenItem.setImageBitmap(bitmap);
+
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -211,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
                                     Toast.makeText(MainActivity.this,"Libro actualizado",Toast.LENGTH_SHORT).show();
                                     //Limpiando campos
-                                    imgvLibro.setImageDrawable(getResources().getDrawable(R.drawable.plussign));
+                                    imgvImagenItem.setImageDrawable(getResources().getDrawable(R.drawable.plussign));
                                     edtLibroLink.setText("");
                                     edtLibroId.setText("");
                                     filepathGlobal = null;
@@ -255,13 +270,29 @@ public class MainActivity extends AppCompatActivity {
                         String titulo = edtProductoTitulo.getText().toString();
                         //Libro miLibro = new Libro(imagen,link,Integer.parseInt(edtLibroId.getText().toString()));
                         Producto miProducto = new Producto(titulo,imagen);
-                        db.collection("Comida/Productos/Dulces").document(edtProductoTitulo.getText().toString()).set(miProducto).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        //Obteniendo la coleccion a la cual se subira el producto
+                        String coleccion = "Comida";
+                        if(swtDesayuno.isChecked()){
+                            coleccion = "Desayuno";
+                        }
+                        if(swtComida.isChecked()){
+                            coleccion="Comida";
+                        }
+                        if(swtDulces.isChecked()){
+                            coleccion="Dulces";
+                        }
+                        if(swtPostres.isChecked()){
+                            coleccion= "Postres";
+                        }
+
+                        db.collection("Comida/Productos/"+coleccion).document(edtProductoTitulo.getText().toString()).set(miProducto).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(MainActivity.this,"Producto actualizado",Toast.LENGTH_SHORT).show();
                                     //Limpiando campos
-                                    imgvLibro.setImageDrawable(getResources().getDrawable(R.drawable.plussign));
+                                    imgvImagenItem.setImageDrawable(getResources().getDrawable(R.drawable.plussign));
                                     edtProductoTitulo.setText("");
                                     filepathGlobal = null;
                                 }
@@ -310,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
                                     Toast.makeText(MainActivity.this,"Banner actualizado",Toast.LENGTH_SHORT).show();
                                     //Limpiando campos
-                                    imgvBanner1.setImageDrawable(getResources().getDrawable(R.drawable.plussign));
+                                    imgvImagenItem.setImageDrawable(getResources().getDrawable(R.drawable.plussign));
                                     edtBanner1Link.setText("");
                                     filepathGlobal = null;
                                 }

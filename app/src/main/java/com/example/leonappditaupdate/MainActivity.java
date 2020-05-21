@@ -19,6 +19,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.leonappditaupdate.Comida.Producto;
+import com.example.leonappditaupdate.Cultura.CulturaBanner;
 import com.example.leonappditaupdate.Inicio.Banner;
 import com.example.leonappditaupdate.Inicio.Libro;
 import com.google.android.gms.tasks.Continuation;
@@ -39,19 +40,28 @@ public class MainActivity extends AppCompatActivity {
     EditText edtLibroLink;
     EditText edtLibroId;
     EditText edtProductoTitulo;
+    EditText edtBannerCulturaLink;
+    EditText edtBannerCulturaId;
+    EditText edtBannerCulturaTitulo;
 
     Button btnBanner1;
     Button btnBanner2;
     Button btnLibro;
     Button btnProducto;
 
+
+
     Button btnElegirImagen1;
     Button btnElegirImagenLibro;
     Button btnElegirImagenProducto;
+    Button btnCultura;
+    Button btnElegirImagenCultura;
+
     Switch swtDesayuno;
     Switch swtComida;
     Switch swtDulces;
     Switch swtPostres;
+
 
     ImageView imgvImagenItem;
 
@@ -97,12 +107,21 @@ public class MainActivity extends AppCompatActivity {
         btnLibro = findViewById(R.id.btnLibro);
         btnElegirImagenLibro = findViewById(R.id.btnElegirImagenLibro);
 
+        //Id banner cultura
+        edtBannerCulturaLink=findViewById(R.id.edtBannerCulturaLink);
+        edtBannerCulturaId=findViewById(R.id.edtBannerCulturaId);
+        edtBannerCulturaTitulo=findViewById(R.id.edtBannerCulturaTitulo);
+        btnCultura=findViewById(R.id.btnBannerCultura);
+        btnElegirImagenCultura=findViewById(R.id.btnElegirImagenBannerCultura);
+
         //Listener
         btnLibro.setOnClickListener(onClickLibro);
         btnElegirImagen1.setOnClickListener(onClickElegirBanner1);
         btnElegirImagenLibro.setOnClickListener(onClickElegirLibro);
         btnElegirImagenProducto.setOnClickListener(onClickElegirProducto);
         btnProducto.setOnClickListener(onClickProducto);
+        btnCultura.setOnClickListener(onClickSubirCultura);
+        btnElegirImagenCultura.setOnClickListener(onClickElegirBannerCultura);
 
         //Instancia de Firebase
         db = FirebaseFirestore.getInstance();
@@ -124,21 +143,18 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener onClickElegirBanner1 = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            llamada = 1;
             AbrirGaleria();
         }
     };
     View.OnClickListener onClickElegirLibro = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            llamada = 2;
             AbrirGaleria();
         }
     };
     View.OnClickListener onClickElegirProducto = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            llamada = 3;
             AbrirGaleria();
         }
     };
@@ -154,6 +170,22 @@ public class MainActivity extends AppCompatActivity {
             AgregarProducto();
         }
     };
+
+    View.OnClickListener onClickElegirBannerCultura= new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AbrirGaleria();
+        }
+    };
+
+    View.OnClickListener onClickSubirCultura= new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AgregarBannerCultura();
+        }
+    };
+
+
 
     private void AbrirGaleria(){
         //Intent implícito de galería
@@ -357,4 +389,55 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
+
+    private void AgregarBannerCultura(){
+        //Subir imagen a Storage primero
+        //Si ya se seleccionó una imagen de la galería
+        if(filepathGlobal != null){
+            final StorageReference filepathr = mStorageRef.child("bannersCultura").child("bannerCultura"+edtBannerCulturaId.getText()+".png");
+            filepathr.putFile(filepathGlobal).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if(!task.isSuccessful()){
+                        throw new Exception();
+                    }
+                    return filepathr.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(getApplicationContext(),"Se subió el banner",Toast.LENGTH_SHORT).show();
+                        Uri downloadLink = task.getResult();
+                        imagen = downloadLink.toString();
+
+                        //Obteniendo cadenas a subir
+                        link = edtBannerCulturaLink.getText().toString();
+                        CulturaBanner miBanner = new CulturaBanner(imagen,link,edtBannerCulturaTitulo.getText().toString(),edtBannerCulturaId.getText().toString());
+                        db.collection("Cultura/Banners/banners").document(edtBannerCulturaId.getText().toString()).set(miBanner).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(MainActivity.this,"Banner actualizado",Toast.LENGTH_SHORT).show();
+                                    //Limpiando campos
+                                    imgvImagenItem.setImageDrawable(getResources().getDrawable(R.drawable.plussign));
+                                    edtBannerCulturaLink.setText("");
+                                    edtBannerCulturaId.setText("");
+                                    edtBannerCulturaTitulo.setText("");
+                                    filepathGlobal = null;
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MainActivity.this,"Uh oh! Algo salió mal... No se actualizaron los libros",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
 }

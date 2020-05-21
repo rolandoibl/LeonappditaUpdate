@@ -10,4 +10,7 @@
     <string name="strLibros">Libros</string>
     <string name="subir_libro">Subir libro</string>
     <string name="strIdDocumento">Id del documento</string>
+    <string name="strBannerCultura">Banners Cultura</string>
+    <string name="strBannerCulturaTitulo">Titulo</string>
+    <string name="strSubirBannerCultura">Subir banner</string>
 </resources>

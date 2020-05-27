@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     EditText edtBannerCulturaLink;
     EditText edtBannerCulturaId;
     EditText edtBannerCulturaTitulo;
+    EditText edtProductoProveedor;
+    EditText edtProductoContacto;
+    EditText edtProductoDescripcion;
 
     Button btnBanner1;
     Button btnBanner2;
@@ -88,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
         edtProductoTitulo =findViewById(R.id.edtProductoTitulo);
         btnElegirImagenProducto=findViewById(R.id.btnElegirImagenProducto);
         btnProducto = findViewById(R.id.btnProducto);
+        edtProductoContacto=findViewById(R.id.edtProductoContacto);
+        edtProductoDescripcion=findViewById(R.id.edtProductoDescripcion);
+        edtProductoProveedor=findViewById(R.id.edtProductoProveedor);
         swtDesayuno = findViewById(R.id.swtDesayuno);
         swtComida = findViewById(R.id.swtComida);
         swtDulces = findViewById(R.id.swtDulces);
@@ -300,8 +306,11 @@ public class MainActivity extends AppCompatActivity {
 
                         //Obteniendo cadenas a subir
                         String titulo = edtProductoTitulo.getText().toString();
+                        String proveedor = edtProductoProveedor.getText().toString();
+                        String contacto = edtProductoContacto.getText().toString();
+                        String descripcion = edtProductoDescripcion.getText().toString();
                         //Libro miLibro = new Libro(imagen,link,Integer.parseInt(edtLibroId.getText().toString()));
-                        Producto miProducto = new Producto(titulo,imagen);
+                        Producto miProducto = new Producto(titulo,imagen,proveedor,contacto,descripcion);
 
                         //Obteniendo la coleccion a la cual se subira el producto
                         String coleccion = "Comida";

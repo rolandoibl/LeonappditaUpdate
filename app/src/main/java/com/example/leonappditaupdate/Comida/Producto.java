@@ -7,13 +7,15 @@ public class Producto {
     private String proveedor;
     private String contacto;
     private String descripcion;
+    private String precio;
 
-    public Producto(String titulo, String imagen, String proveedor, String contacto, String descripcion) {
+    public Producto(String titulo, String imagen, String proveedor, String contacto, String descripcion, String precio) {
         this.titulo = titulo;
         this.imagen = imagen;
         this.proveedor = proveedor;
         this.contacto = contacto;
         this.descripcion = descripcion;
+        this.precio = precio;
     }
 
     public String getTitulo() {
@@ -55,5 +57,9 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public String getPrecio() { return precio; }
+
+    public void setPrecio(String precio) { this.precio = precio; }
 
 }

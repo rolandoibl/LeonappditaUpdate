@@ -226,6 +226,12 @@
                 android:layout_height="wrap_content"
                 android:text="Post"
                 android:id="@+id/swtPostres"/>
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="Precio"
+                android:textSize="13sp"
+                android:id="@+id/edtProductoPrecio"/>
 
         </LinearLayout>
         <Button
